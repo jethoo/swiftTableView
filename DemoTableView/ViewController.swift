@@ -10,14 +10,48 @@ import UIKit
 
 //import UITableViewDelegate and UITableViewDataSource
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
+    
+    
     //two methods needed for table view are numberOfRowsInSection and cellForRowAt
+    //define an array of values which can be displayed
+    let productList = ["iPhone", "Oppo", "Samsung", "Vivo"]
+    let priceList = ["1250.00", "1100.00", "899.00", "750.00"]
+    let images = ["iphone","oppo","samsung","vivo"]
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view.
+    }
+
+    
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        <#code#>
+        return productList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        <#code#>
+        
+        //inhereting from the TableViewCell.swift class
+        let tempCell:TableViewCell = tableView.dequeueReusableCell(withIdentifier: "cell") as! TableViewCell
+        tempCell.deviceName.text = productList[indexPath.row]
+        tempCell.devicePrice.text = priceList[indexPath.row]
+        tempCell.deviceImage.image =  UIImage(named: images[indexPath.row] + ".png" )
+       
+        return tempCell
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+       let detailVC:ProductDetailViewController = self.storyboard?.instantiateViewController(withIdentifier: "ProductDetailViewController") as! ProductDetailViewController
+        // assign the values to the local variable declared in ProductDetailViewController Class
+         detailVC.productName = productList[indexPath.row]
+         detailVC.productPrice = priceList[indexPath.row]
+         //detailVC.productImage = UIImage(named: images[indexPath.row] + ".png" )!
+         // make it navigate to ProductDetailViewController
+         self.navigationController?.pushViewController(detailVC, animated: true)
+    }
+    
+    
     
     
     /*
@@ -30,11 +64,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
      
             
      */
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-    }
 
 
 }
